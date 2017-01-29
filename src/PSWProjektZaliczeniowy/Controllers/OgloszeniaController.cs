@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PSWProjektZaliczeniowy.ViewModel;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,7 +50,7 @@ namespace PSWProjektZaliczeniowy.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
         public IActionResult Dodaj()
         {
             DodajKategorie();
@@ -57,11 +58,13 @@ namespace PSWProjektZaliczeniowy.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public IActionResult Dodaj(NoweOgloszenie nowe)
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> Dodaj(NoweOgloszenie nowe)
         {
             if (ModelState.IsValid)
             {
+                var filename = await DodajZdjecie(nowe.Zdjecie);
+
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -84,6 +87,38 @@ namespace PSWProjektZaliczeniowy.Controllers
                 }
 
                 return View(nowe);
+            }
+        }
+
+        private async Task<string> DodajZdjecie(IFormFile zdjecie)
+        {
+            if (zdjecie != null)
+            {                
+                if (!System.IO.Directory.Exists("upload"))
+                {
+                    System.IO.Directory.CreateDirectory("upload");
+                }               
+
+                var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+                var userName = authInfo.Principal.Identity.Name;
+
+                if (!System.IO.Directory.Exists("upload\\" + userName))
+                {
+                    System.IO.Directory.CreateDirectory("upload\\" + userName);
+                }
+
+                var ret = "";
+
+                using (var stream = new System.IO.FileStream("upload\\" + userName + "\\" + zdjecie.FileName, System.IO.FileMode.Create))
+                {
+                    await zdjecie.CopyToAsync(stream);
+                }
+
+                return ret;
+            }
+            else
+            {
+                return null;
             }
         }
     }
