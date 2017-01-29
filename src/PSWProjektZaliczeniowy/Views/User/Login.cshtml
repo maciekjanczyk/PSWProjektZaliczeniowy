@@ -1,0 +1,46 @@
+﻿@model PSWProjektZaliczeniowy.Model.Uzytkownik
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true);
+    <div>
+        <fieldset>
+            <legend>Login</legend>
+            <div class="editor-label">
+                @Html.LabelFor(u => u.Login)
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Login)
+                @Html.ValidationMessageFor(u => u.Login)
+            </div>
+            <br />
+            <div class="editor-label">
+                @Html.LabelFor(u => u.Haslo)
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.PasswordFor(u => u.Haslo)
+                @Html.ValidationMessageFor(u => u.Haslo)
+            </div>
+            <br />
+            <input type="submit" value="Zaloguj" />
+        </fieldset>
+        @Html.ValidationMessage("CustomError")
+    </div>
+}
+<br/>
+<div>
+    Nie masz konta na naszym portalu?
+    <br/>
+    <h1 style="color: blue"><a href="/User/Register">
+        Zarejestruj się!
+    </a></h1>
+</div>
+

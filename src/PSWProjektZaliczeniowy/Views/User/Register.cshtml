@@ -1,0 +1,88 @@
+﻿@model PSWProjektZaliczeniowy.Model.Uzytkownik
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true);
+    <div>
+        <fieldset>
+            <legend>Zarejestruj</legend>
+            <div class="editor-label">
+                Login:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Login)
+                @Html.ValidationMessageFor(u => u.Login)
+            </div>
+            <br />@Html.ValidationMessage("LoginError")
+            
+            <div class="editor-label">
+                Hasło:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.PasswordFor(u => u.Haslo)
+                @Html.ValidationMessageFor(u => u.Haslo)
+            </div>
+            <br />
+
+            <div class="editor-label">
+                Email:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Email)
+                @Html.ValidationMessageFor(u => u.Email)
+            </div>
+            <br />@Html.ValidationMessage("EmailError")
+
+            <div class="editor-label">
+                Imię:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Imie)
+                @Html.ValidationMessageFor(u => u.Imie)
+            </div>
+            <br />
+
+            <div class="editor-label">
+                Nazwisko:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Nazwisko)
+                @Html.ValidationMessageFor(u => u.Nazwisko)
+            </div>
+            <br />
+
+            <div class="editor-label">
+                Miasto:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Adres)
+                @Html.ValidationMessageFor(u => u.Adres)
+            </div>
+            <br />
+
+            <div class="editor-label">
+                Nr telefonu:
+            </div>
+            <br />
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.Nrtel)
+                @Html.ValidationMessageFor(u => u.Nrtel)
+            </div>
+            <br />            
+
+            <input type="submit" value="Zarejestruj" />
+        </fieldset>        
+    </div>
+}

@@ -1,0 +1,27 @@
+﻿@model PSWProjektZaliczeniowy.DAL.LeniwiecContext
+
+@{
+    ViewData["Title"] = "Osoby";
+}
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>Rola</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var os in Model.Uzytkownik)
+        {
+            <tr>
+                <td>@os.UzytkownikId</td>
+                <td>@os.Login</td>
+                <td>@os.Email</td>
+                <td>@os.Nrtel</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PSWProjektZaliczeniowy.Model;
+using Microsoft.EntityFrameworkCore;
+using PSWProjektZaliczeniowy.DAL;
+using Microsoft.AspNetCore.Http;
 
 namespace PSWProjektZaliczeniowy
 {
@@ -29,10 +33,14 @@ namespace PSWProjektZaliczeniowy
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<LeniwiecContext>(opt => opt.UseSqlServer(
+                Configuration.GetConnectionString("DefaultConnection")
+                ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, LeniwiecContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -49,12 +57,22 @@ namespace PSWProjektZaliczeniowy
 
             app.UseStaticFiles();
 
+            var cookieAuthOpt = new CookieAuthenticationOptions();
+            cookieAuthOpt.AuthenticationScheme = "MyCookie";
+            cookieAuthOpt.LoginPath = new PathString("/User/Login/");
+            cookieAuthOpt.AccessDeniedPath = new PathString("/User/Login/");
+            cookieAuthOpt.AutomaticAuthenticate = true;
+            cookieAuthOpt.AutomaticChallenge = true;
+            app.UseCookieAuthentication(cookieAuthOpt);
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DbInitializer.DodajKategorieIPodaktegorie(context);
         }
     }
 }

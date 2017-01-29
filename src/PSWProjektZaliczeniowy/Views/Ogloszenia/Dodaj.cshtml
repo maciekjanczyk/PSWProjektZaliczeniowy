@@ -1,0 +1,24 @@
+﻿@model ICollection<PSWProjektZaliczeniowy.Model.Kategoria>
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Kategorie:</h1>
+<ul class="list-group">
+    @foreach (var k in Model)
+    {
+        <li class="list-group-item-info">
+            @k.Nazwa (@k.KategoriaId)
+            <ul class="list-group">
+                @foreach (var p in k.Podkategoria)
+                {
+                    <li class="list-group-item-success">@p.Nazwa</li>
+                }
+            </ul>
+
+        </li>
+    }
+</ul>
