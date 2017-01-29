@@ -11,6 +11,9 @@ namespace PSWProjektZaliczeniowy.Model
         public int PodkategoriaId { get; set; }
         public string Nazwa { get; set; }
         
+        public int KategoriaId { get; set; }
         public virtual Kategoria Kategoria { get; set; }
+
+        public virtual List<Ogloszenie> Ogloszenie { get; set; }
     }
 }

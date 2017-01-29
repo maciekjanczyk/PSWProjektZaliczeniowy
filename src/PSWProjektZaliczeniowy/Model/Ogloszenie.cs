@@ -15,10 +15,12 @@ namespace PSWProjektZaliczeniowy.Model
         public bool Zamiana { get; set; }
         public string Stan { get; set; }
         
-        public Uzytkownik Uzytkownik { get; set; }
+        public int UzytkownikId { get; set; }
+        public virtual Uzytkownik Uzytkownik { get; set; }
 
-        public Podkategoria Podkategoria { get; set; }
+        public int PodkategoriaId { get; set; }
+        public virtual Podkategoria Podkategoria { get; set; }
 
-        public List<Obserwowane> Obserwowane { get; set; }
+        public virtual List<Obserwowane> Obserwowane { get; set; }
     }
 }

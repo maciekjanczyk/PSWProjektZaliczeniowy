@@ -1,0 +1,51 @@
+﻿@model PSWProjektZaliczeniowy.Model.Ogloszenie
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h3>@Model.Podkategoria.Kategoria.Nazwa > @Model.Podkategoria.Nazwa</h3>
+<div class="panel panel-success">
+
+    <h2>@Model.Tytul (ID: @Model.OgloszenieId)</h2>
+    @if (Model.Zamiana)
+    {
+        <h3>Zamiana</h3>
+    }
+    else
+    {
+        <h3>Cena: @Model.Cena</h3>
+    }
+
+    <div class="panel-body">
+        <div>
+            <img src="~/@Model.Zdjecia" />
+        </div>
+
+        <div>
+            <span>
+                <b>Miasto: </b>
+                @Model.Uzytkownik.Adres
+            </span>
+            <span>
+                <b>Nr kontaktowy:</b>
+                @Model.Uzytkownik.Nrtel
+            </span>
+            <span>
+                <b>Email:</b>
+                @Model.Uzytkownik.Email
+            </span>
+        </div>
+
+        <div>
+            <b>Opis:</b>
+        </div>
+
+        <div>
+            @Model.Opis
+        </div>
+
+    </div>
+</div>

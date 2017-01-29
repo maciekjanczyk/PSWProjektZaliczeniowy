@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PSWProjektZaliczeniowy.Model.Ogloszenie>
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<div class="panel panel-success">
+
+    <div class="panel-heading">
+        <h1>Moje ogłoszenia</h1>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-bordered table-striped" >
+            <thead>
+                <tr>
+                    <th>Id.</th>
+                    <th>Tytuł</th>
+                    <th>Cena</th>
+                    <th>Zamiana</th>
+                    <th>Kategoria</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var ogl in Model)
+                {
+                    <tr onclick="location.href = '/Ogloszenia/Pokaz/@ogl.OgloszenieId'" style="cursor: pointer">
+                        <td>@ogl.OgloszenieId</td>
+                        <td>@ogl.Tytul</td>
+                        <td>@ogl.Cena</td>
+                        <td>@ogl.Zamiana</td>
+                        <td>@ogl.Podkategoria.Kategoria.Nazwa > @ogl.Podkategoria.Nazwa</td>
+                        <td><a href="/Ogloszenia/Usun/@ogl.OgloszenieId">Usuń</a></td>
+                        <td><a href="/Ogloszenia/Edycja/@ogl.OgloszenieId">Edytuj</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

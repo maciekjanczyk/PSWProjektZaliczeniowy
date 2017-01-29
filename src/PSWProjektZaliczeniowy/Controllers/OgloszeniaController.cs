@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PSWProjektZaliczeniowy.ViewModel;
 using Microsoft.AspNetCore.Http;
+using PSWProjektZaliczeniowy.Model;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,6 +65,25 @@ namespace PSWProjektZaliczeniowy.Controllers
             if (ModelState.IsValid)
             {
                 var filename = await DodajZdjecie(nowe.Zdjecie);
+                var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+                var userName = authInfo.Principal.Identity.Name;
+                var user = _context.Uzytkownik.Where(u => u.Login == userName).First();
+                var pid = Convert.ToInt32(nowe.Podkategoria);
+
+                var ogloszenie = new Ogloszenie
+                {
+                    Zdjecia = filename,
+                    Uzytkownik = user,
+                    Stan = "Aktualne",
+                    Cena = nowe.Cena,
+                    Zamiana = nowe.Cena == 0 ? true : false,
+                    Podkategoria = _context.Podkategoria.Find(pid),
+                    Opis = nowe.Opis,
+                    Tytul = nowe.Tytul
+                };
+
+                _context.Ogloszenie.Add(ogloszenie);
+                _context.SaveChanges();
 
                 return RedirectToAction("Index", "Home");
             }
@@ -94,22 +114,22 @@ namespace PSWProjektZaliczeniowy.Controllers
         {
             if (zdjecie != null)
             {                
-                if (!System.IO.Directory.Exists("upload"))
+                if (!System.IO.Directory.Exists("wwwroot\\images\\upload"))
                 {
-                    System.IO.Directory.CreateDirectory("upload");
+                    System.IO.Directory.CreateDirectory("wwwroot\\images\\upload");
                 }               
 
                 var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
                 var userName = authInfo.Principal.Identity.Name;
 
-                if (!System.IO.Directory.Exists("upload\\" + userName))
+                if (!System.IO.Directory.Exists("wwwroot\\images\\upload\\" + userName))
                 {
-                    System.IO.Directory.CreateDirectory("upload\\" + userName);
+                    System.IO.Directory.CreateDirectory("wwwroot\\images\\upload\\" + userName);
                 }
 
-                var ret = "";
+                var ret = "images\\upload\\" + userName + "\\" + zdjecie.FileName;
 
-                using (var stream = new System.IO.FileStream("upload\\" + userName + "\\" + zdjecie.FileName, System.IO.FileMode.Create))
+                using (var stream = new System.IO.FileStream("wwwroot\\" + ret, System.IO.FileMode.Create))
                 {
                     await zdjecie.CopyToAsync(stream);
                 }
@@ -118,7 +138,63 @@ namespace PSWProjektZaliczeniowy.Controllers
             }
             else
             {
-                return null;
+                return "";
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Pokaz(int id)
+        {
+            var ogl = _context.Ogloszenie.Find(id);
+            _context.Uzytkownik.Find(ogl.UzytkownikId);
+            _context.Podkategoria.Find(ogl.PodkategoriaId);
+            _context.Kategoria.Find(ogl.Podkategoria.KategoriaId);
+            return View(_context.Ogloszenie.Find(id));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Uzytkownik()
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var user = _context.Uzytkownik.First(u => u.Login == userName);
+            var listaOgloszen = _context.Ogloszenie.Where(o => o.UzytkownikId == user.UzytkownikId).ToList();
+
+            foreach (var og in listaOgloszen)
+            {
+                var podk = _context.Podkategoria.First(p => p.PodkategoriaId == og.PodkategoriaId);
+                _context.Kategoria.First(k => k.KategoriaId == podk.KategoriaId);
+            }
+
+            return View(listaOgloszen);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Usun(int id)
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var ogloszenie = _context.Ogloszenie.First(o => o.OgloszenieId == id);
+            var wlasciciel = _context.Uzytkownik.First(u => u.UzytkownikId == ogloszenie.UzytkownikId);
+
+            if (wlasciciel.Login != userName)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                try
+                {
+                    System.IO.File.Delete("wwwroot\\" + ogloszenie.Zdjecia);
+                }
+                catch (Exception) { }
+
+                _context.Ogloszenie.Remove(ogloszenie);
+                _context.SaveChanges();
+
+                return RedirectToAction("Uzytkownik");
             }
         }
     }
