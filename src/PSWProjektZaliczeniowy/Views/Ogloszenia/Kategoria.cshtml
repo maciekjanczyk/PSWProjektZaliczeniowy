@@ -1,0 +1,43 @@
+﻿@model PSWProjektZaliczeniowy.Model.Podkategoria
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="panel panel-success">
+
+    <div class="panel-heading">
+        <h1>@Model.Kategoria.Nazwa > @Model.Nazwa</h1>
+    </div>
+
+    @if (Model.Ogloszenie != null)
+    {
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id.</th>
+                    <th>Tytuł</th>
+                    <th>Cena</th>
+                    <th>Zamiana</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var ogl in Model.Ogloszenie)
+                {
+                    <tr onclick="location.href = '/Ogloszenia/Pokaz/@ogl.OgloszenieId'" style="cursor: pointer">
+                        <td>@ogl.OgloszenieId</td>
+                        <td>@ogl.Tytul</td>
+                        <td>@ogl.Cena</td>
+                        <td>@ogl.Zamiana</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+
+</div>

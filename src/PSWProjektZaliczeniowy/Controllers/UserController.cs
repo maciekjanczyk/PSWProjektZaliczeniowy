@@ -25,7 +25,14 @@ namespace PSWProjektZaliczeniowy.Controllers
         public async Task<IActionResult> Index()
         {
             var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");            
-            ViewData["UserName"] = authInfo.Principal.Identity.Name;
+            var userName = authInfo.Principal.Identity.Name;
+
+            if (userName == "admin")
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
+            ViewData["UserName"] = userName;
 
             return View();
         }
@@ -40,6 +47,11 @@ namespace PSWProjektZaliczeniowy.Controllers
                 return RedirectToAction("Index", "User");
             }
 
+            if (authInfo.Principal != null && authInfo.Principal.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
             return View();
         }
 
@@ -50,13 +62,25 @@ namespace PSWProjektZaliczeniowy.Controllers
             {
                 if (_context.Uzytkownik.Where(u => u.Login == user.Login && u.Haslo == user.Haslo).ToList().Any())
                 {
-                    var principal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+
+                    if (user.Login == "admin")
+                    {
+                        var principal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+                                        new Claim(ClaimTypes.Name, user.Login),
+                                        new Claim(ClaimTypes.Role, "Admin")},
+                                            "Basic"));
+                        await HttpContext.Authentication.SignInAsync("MyCookie", principal);
+                    }
+                    else
+                    {
+                        var principal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
                                         new Claim(ClaimTypes.Name, user.Login),
                                         new Claim(ClaimTypes.Role, "User")},
-                                        "Basic"));
-                    await HttpContext.Authentication.SignInAsync("MyCookie", principal);                
+                                            "Basic"));
+                        await HttpContext.Authentication.SignInAsync("MyCookie", principal);
+                    }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index");
                 }
                 else
                 {
@@ -105,7 +129,13 @@ namespace PSWProjektZaliczeniowy.Controllers
                     _context.Uzytkownik.Add(user);
                     _context.SaveChanges();
 
-                    return RedirectToAction("Login", "User", user);
+                    var principal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+                                        new Claim(ClaimTypes.Name, user.Login),
+                                        new Claim(ClaimTypes.Role, "User")},
+                                        "Basic"));
+                    await HttpContext.Authentication.SignInAsync("MyCookie", principal);
+
+                    return RedirectToAction("Index");
                 }
             }
 

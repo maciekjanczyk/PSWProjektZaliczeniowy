@@ -47,7 +47,10 @@ namespace PSWProjektZaliczeniowy.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            var katLista = _context.Kategoria.ToList();
+            _context.Podkategoria.ToList();
+
+            return View(katLista);
         }
 
         [HttpGet]
@@ -196,6 +199,15 @@ namespace PSWProjektZaliczeniowy.Controllers
 
                 return RedirectToAction("Uzytkownik");
             }
+        }
+
+        public IActionResult Kategoria(int id)
+        {
+            var podkat = _context.Podkategoria.Find(id);
+            _context.Kategoria.Find(podkat.KategoriaId);
+            _context.Ogloszenie.Where(o => o.PodkategoriaId == podkat.PodkategoriaId).ToList();
+
+            return View(podkat);
         }
     }
 }

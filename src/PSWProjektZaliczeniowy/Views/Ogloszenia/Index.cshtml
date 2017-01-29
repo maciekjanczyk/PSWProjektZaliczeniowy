@@ -1,0 +1,36 @@
+﻿@model IEnumerable<PSWProjektZaliczeniowy.Model.Kategoria>
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="panel panel-info">
+    <div class="panel panel-heading">
+        Wybierz kategorię:
+    </div>
+
+    <div class="panel panel-body">
+        <ul class="list-group" style="cursor: pointer">
+            @foreach(var k in Model)
+            {
+                <li onclick="$('#div_@k.KategoriaId').fadeToggle()" class="list-group-item-success">
+                    @k.Nazwa
+                    <div id="div_@k.KategoriaId" style="display: none">
+                        <ul class="list-group">
+                            @foreach (var p in k.Podkategoria)
+                            {
+                                <li class="list-group-item-info">
+                                    <a href="/Ogloszenia/Kategoria/@p.PodkategoriaId">
+                                        @p.Nazwa
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>          
+            }
+        </ul>
+    </div>
+</div>
