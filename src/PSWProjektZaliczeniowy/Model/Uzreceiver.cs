@@ -12,6 +12,6 @@ namespace PSWProjektZaliczeniowy.Model
         public int UzreceiverId { get; set; }
 
         public virtual Uzytkownik Uzytkownik { get; set; }
-        public List<Wiadomosc> Wiadomosc { get; set; }
+        public virtual List<Wiadomosc> Wiadomosc { get; set; }
     }
 }
