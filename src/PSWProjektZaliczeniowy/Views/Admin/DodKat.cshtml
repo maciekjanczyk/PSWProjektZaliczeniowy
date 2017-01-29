@@ -1,0 +1,23 @@
+﻿@model PSWProjektZaliczeniowy.Model.Kategoria
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="form form-group">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div>Nazwa:</div>
+        @Html.TextBoxFor(k => k.Nazwa, new { Class = "form-control" });
+        <br/>
+        <div>
+            @Html.ValidationMessage("NazwaError")
+        </div>
+        <div>
+            <input type="submit" value="Dodaj" class="btn btn-success"/>
+        </div>
+    }
+</div>
