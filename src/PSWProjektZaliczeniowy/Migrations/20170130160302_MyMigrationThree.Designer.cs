@@ -8,9 +8,10 @@ using PSWProjektZaliczeniowy.DAL;
 namespace PSWProjektZaliczeniowy.Migrations
 {
     [DbContext(typeof(LeniwiecContext))]
-    partial class LeniwiecContextModelSnapshot : ModelSnapshot
+    [Migration("20170130160302_MyMigrationThree")]
+    partial class MyMigrationThree
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -92,6 +93,28 @@ namespace PSWProjektZaliczeniowy.Migrations
                     b.ToTable("Podkategoria");
                 });
 
+            modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Uzreceiver", b =>
+                {
+                    b.Property<int>("UzreceiverId");
+
+                    b.Property<int>("UzytkownikId");
+
+                    b.HasKey("UzreceiverId");
+
+                    b.ToTable("Uzreceiver");
+                });
+
+            modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Uzsender", b =>
+                {
+                    b.Property<int>("UzsenderId");
+
+                    b.Property<int>("UzytkownikId");
+
+                    b.HasKey("UzsenderId");
+
+                    b.ToTable("Uzsender");
+                });
+
             modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Uzytkownik", b =>
                 {
                     b.Property<int>("UzytkownikId")
@@ -127,15 +150,17 @@ namespace PSWProjektZaliczeniowy.Migrations
 
                     b.Property<bool>("Odczytana");
 
-                    b.Property<int>("ReceiverId");
-
-                    b.Property<int>("SenderId");
-
                     b.Property<string>("Tekst");
 
-                    b.Property<string>("Tytul");
+                    b.Property<int?>("UzreceiverId");
+
+                    b.Property<int?>("UzsenderId");
 
                     b.HasKey("WiadomoscId");
+
+                    b.HasIndex("UzreceiverId");
+
+                    b.HasIndex("UzsenderId");
 
                     b.ToTable("Wiadomosc");
                 });
@@ -170,6 +195,33 @@ namespace PSWProjektZaliczeniowy.Migrations
                         .WithMany("Podkategoria")
                         .HasForeignKey("KategoriaId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Uzreceiver", b =>
+                {
+                    b.HasOne("PSWProjektZaliczeniowy.Model.Uzytkownik", "Uzytkownik")
+                        .WithOne("Uzreceiver")
+                        .HasForeignKey("PSWProjektZaliczeniowy.Model.Uzreceiver", "UzreceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Uzsender", b =>
+                {
+                    b.HasOne("PSWProjektZaliczeniowy.Model.Uzytkownik", "Uzytkownik")
+                        .WithOne("Uzsender")
+                        .HasForeignKey("PSWProjektZaliczeniowy.Model.Uzsender", "UzsenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PSWProjektZaliczeniowy.Model.Wiadomosc", b =>
+                {
+                    b.HasOne("PSWProjektZaliczeniowy.Model.Uzreceiver", "Uzreceiver")
+                        .WithMany("Wiadomosc")
+                        .HasForeignKey("UzreceiverId");
+
+                    b.HasOne("PSWProjektZaliczeniowy.Model.Uzsender", "Uzsender")
+                        .WithMany("Wiadomosc")
+                        .HasForeignKey("UzsenderId");
                 });
         }
     }

@@ -1,0 +1,31 @@
+﻿@model PSWProjektZaliczeniowy.ViewModel.CzytajWiadomoscVM
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h2>@Model.Wiadomosc.Tytul</h2>
+    </div>
+
+    <div class="panel-body">
+        <div>
+            <b>Nadawca: </b> @Model.Sender.Login
+        </div>
+        <div>
+            <b>Odbiorca: </b> @Model.Receiver.Login
+        </div>
+        <div>
+            <b>Data wysłania: </b> @Model.Wiadomosc.Data
+        </div>
+        <div>
+            <b>Treść:</b>
+            <div>
+                @Model.Wiadomosc.Tekst
+            </div>
+        </div>
+    </div>
+</div>

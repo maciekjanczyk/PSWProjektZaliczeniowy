@@ -1,0 +1,42 @@
+﻿@model PSWProjektZaliczeniowy.ViewModel.WiadomoscVM
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h2>Wyślij wiadomość</h2>
+    </div>
+
+    <div class="panel-body">
+        @Html.ValidationSummary(true)
+
+        @using (Html.BeginForm())
+        {            
+            <fieldset>
+                <div>
+                    <h3>Odbiorca:</h3>             
+                    @Html.TextBoxFor(m => m.Odbiorca, new { @class = "form-control" })
+                </div>
+
+                <div>
+                    <h3>Tytuł:</h3>                 
+                    @Html.TextBoxFor(m => m.Tytul, new { @class = "form-control" })
+                </div>
+
+                <div>
+                    <h3>Treść wiadomości:</h3>                    
+                    @Html.TextAreaFor(m => m.Tekst, 10, 20, new { Class = "form-control" })
+                </div>
+
+                <div>
+                    <br />
+                    <input type="submit" value="Wyślij" class="form-control btn btn-success"/>
+                </div>
+            </fieldset>
+        }
+    </div>
+</div>

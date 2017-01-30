@@ -19,8 +19,7 @@ namespace PSWProjektZaliczeniowy.Model
         public string Nrtel { get; set; }
         public string Adres { get; set; }
 
-        public virtual Uzsender Uzsender { get; set; }
-        public virtual Uzreceiver Uzreceiver { get; set; }
+        //public virtual List<Wiadomosc> Wiadomosc { get; set; }
 
         public virtual List<Ogloszenie> Ogloszenie { get; set; }
         public virtual List<Obserwowane> Obserwowane { get; set; }

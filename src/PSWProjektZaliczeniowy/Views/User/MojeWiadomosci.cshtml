@@ -1,0 +1,63 @@
+﻿@model PSWProjektZaliczeniowy.ViewModel.MojeWiadomosciVM
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        Odebrane:
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nadawca</th>
+                    <th>Tytuł</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wy in Model.Odebrane)
+                {
+                    <tr onclick="location.href = '/User/CzytajWiadomosc/@wy.Item1.WiadomoscId'" style="cursor: pointer">
+                        <td>@wy.Item2.Login</td>
+                        <td>@wy.Item1.Tytul</td>
+                        <td>@wy.Item1.Data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        Wysłane:
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Odbiorca</th>
+                    <th>Tytuł</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wy in Model.Wyslane)
+                {
+                    <tr onclick="location.href = '/User/CzytajWiadomosc/@wy.Item1.WiadomoscId'" style="cursor: pointer">
+                        <td>@wy.Item2.Login</td>
+                        <td>@wy.Item1.Tytul</td>
+                        <td>@wy.Item1.Data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

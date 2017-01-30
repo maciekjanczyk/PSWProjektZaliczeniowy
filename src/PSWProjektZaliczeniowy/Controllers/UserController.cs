@@ -7,6 +7,7 @@ using PSWProjektZaliczeniowy.Model;
 using PSWProjektZaliczeniowy.DAL;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using PSWProjektZaliczeniowy.ViewModel;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -140,6 +141,57 @@ namespace PSWProjektZaliczeniowy.Controllers
             }
 
             return View(user);
+        }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> CzytajWiadomosc(int id)
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var wiad = _context.Wiadomosc.Find(id);
+            var sender = _context.Uzytkownik.First(u => u.UzytkownikId == wiad.SenderId);
+            var receiver = _context.Uzytkownik.First(u => u.UzytkownikId == wiad.ReceiverId);
+
+            if (userName != sender.Login && userName != receiver.Login)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(new CzytajWiadomoscVM {
+                Wiadomosc = wiad,
+                Sender = sender,
+                Receiver = receiver
+            });
+        }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> MojeWiadomosci()
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var user = _context.Uzytkownik.First(u => u.Login == userName);            
+
+            var wyslane = _context.Wiadomosc.Where(w => w.SenderId == user.UzytkownikId).ToList();
+            var retwysl = new List<Tuple<Wiadomosc, Uzytkownik>>();
+
+            foreach (var w in wyslane)
+            {
+                var u = _context.Uzytkownik.Find(w.ReceiverId);
+                retwysl.Add(new Tuple<Wiadomosc, Uzytkownik>(w, u));
+            }
+
+            var odebrane = _context.Wiadomosc.Where(w => w.ReceiverId == user.UzytkownikId).ToList();
+            var retodr = new List<Tuple<Wiadomosc, Uzytkownik>>();
+
+            foreach (var o in odebrane)
+            {
+                var u = _context.Uzytkownik.Find(o.SenderId);
+                retodr.Add(new Tuple<Wiadomosc, Uzytkownik>(o, u));
+            }
+
+            return View(new MojeWiadomosciVM { Wyslane = retwysl, Odebrane = retodr });
         }
     }
 }
