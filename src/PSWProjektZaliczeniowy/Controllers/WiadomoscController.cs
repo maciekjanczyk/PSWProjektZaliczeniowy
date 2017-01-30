@@ -69,5 +69,22 @@ namespace PSWProjektZaliczeniowy.Controllers
 
             return View(wiad);
         }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public IActionResult Odpowiedz(int id, string ty)
+        {
+            var odbiorcaVM = _context.Uzytkownik.Find(id);
+            var tytulwiadVM = string.Format("Odp - {0}", ty);
+
+            return View("Wyslij", new WiadomoscVM { Odbiorca = odbiorcaVM.Login, Tytul = tytulwiadVM });
+        }
+
+        [HttpPost]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> Odpowiedz(WiadomoscVM wiad)
+        {
+            return await Wyslij(wiad);
+        }
     }
 }

@@ -24,9 +24,18 @@
                 @foreach (var wy in Model.Odebrane)
                 {
                     <tr onclick="location.href = '/User/CzytajWiadomosc/@wy.Item1.WiadomoscId'" style="cursor: pointer">
-                        <td>@wy.Item2.Login</td>
-                        <td>@wy.Item1.Tytul</td>
-                        <td>@wy.Item1.Data</td>
+                        @if (wy.Item1.Odczytana)
+                        {
+                            <td>@wy.Item2.Login</td>
+                            <td>@wy.Item1.Tytul</td>
+                            <td>@wy.Item1.Data</td>
+                        }
+                        else
+                        {
+                            <td><b>@wy.Item2.Login</b></td>
+                            <td><b>@wy.Item1.Tytul</b></td>
+                            <td><b>@wy.Item1.Data</b></td>
+                        }
                     </tr>
                 }
             </tbody>

@@ -158,6 +158,13 @@ namespace PSWProjektZaliczeniowy.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            if (receiver.Login == userName && (!wiad.Odczytana))
+            {
+                wiad.Odczytana = true;
+                _context.SaveChanges();
+                wiad = _context.Wiadomosc.Find(id);
+            }
+
             return View(new CzytajWiadomoscVM {
                 Wiadomosc = wiad,
                 Sender = sender,
@@ -182,6 +189,8 @@ namespace PSWProjektZaliczeniowy.Controllers
                 retwysl.Add(new Tuple<Wiadomosc, Uzytkownik>(w, u));
             }
 
+            retwysl.Sort((t1, t2) => { return t1.Item1.Data.Ticks > t2.Item1.Data.Ticks ? -1 : 1; });
+
             var odebrane = _context.Wiadomosc.Where(w => w.ReceiverId == user.UzytkownikId).ToList();
             var retodr = new List<Tuple<Wiadomosc, Uzytkownik>>();
 
@@ -190,6 +199,8 @@ namespace PSWProjektZaliczeniowy.Controllers
                 var u = _context.Uzytkownik.Find(o.SenderId);
                 retodr.Add(new Tuple<Wiadomosc, Uzytkownik>(o, u));
             }
+
+            retodr.Sort((t1, t2) => { return t1.Item1.Data.Ticks > t2.Item1.Data.Ticks ? -1 : 1; });
 
             return View(new MojeWiadomosciVM { Wyslane = retwysl, Odebrane = retodr });
         }
