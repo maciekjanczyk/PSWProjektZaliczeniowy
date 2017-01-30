@@ -209,5 +209,50 @@ namespace PSWProjektZaliczeniowy.Controllers
 
             return View(podkat);
         }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> Edycja(int id)
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var ogloszenie = _context.Ogloszenie.Find(id);
+            var wlasciciel = _context.Uzytkownik.First(u => u.UzytkownikId == ogloszenie.UzytkownikId);
+
+            if (wlasciciel.Login != userName)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(ogloszenie);
+        }
+
+        [HttpPost]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public IActionResult Edycja(Ogloszenie ogl)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (ogl.Tytul == null)
+                {
+                    ModelState.AddModelError("TytulError", "Musisz wprowadzić tytuł ogłoszenia!");
+                }
+
+                if (ogl.Opis == null)
+                {
+                    ModelState.AddModelError("OpisError", "Brakuje opisu przedmiotu!");
+                }
+
+                return View(ogl);
+            }
+
+            var refka = _context.Ogloszenie.Find(ogl.OgloszenieId);
+            refka.Tytul = ogl.Tytul;
+            refka.Opis = ogl.Opis;
+            refka.Cena = ogl.Cena;
+            _context.SaveChanges();
+
+            return RedirectToAction("Uzytkownik");
+        }
     }
 }
