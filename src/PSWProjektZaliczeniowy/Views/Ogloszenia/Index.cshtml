@@ -6,9 +6,10 @@
 @{
 }
 
-<div class="panel panel-info">
+<br/>
+<div class="panel panel-success">
     <div class="panel panel-heading">
-        Wybierz kategorię:
+        <h3>Wybierz kategorię:</h3>
     </div>
 
     <div class="panel panel-body">
@@ -34,3 +35,22 @@
         </ul>
     </div>
 </div>
+
+<div class="panel panel-info">
+    <div class="panel panel-heading">
+        <h3>Szukaj po nazwie:</h3>
+    </div>
+
+    <div class="panel panel-body">
+        <input type="text" id="sekwencja" class="form-control" />
+        <br/>
+        <button onclick="szukaj()" class="btn btn-success">Szukaj</button>
+    </div>
+</div>
+
+<script>
+    function szukaj() {
+        var inp = $('#sekwencja').val();
+        location.href = '/Ogloszenia/Szukaj?text=' + inp;
+    }
+</script>

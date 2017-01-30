@@ -1,4 +1,4 @@
-﻿@model PSWProjektZaliczeniowy.Model.Podkategoria
+﻿@model IEnumerable<PSWProjektZaliczeniowy.Model.Ogloszenie>
 
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,11 +9,9 @@
 <div class="panel panel-success">
 
     <div class="panel-heading">
-        <h1>@Model.Kategoria.Nazwa > @Model.Nazwa</h1>
+        <h1>Wyniki wyszukiwania dla @ViewData["sekwencja"]:</h1>
     </div>
 
-    @if (Model.Ogloszenie != null)
-    {
     <div class="panel-body">
         <table class="table table-bordered table-striped">
             <thead>
@@ -23,23 +21,24 @@
                     <th>Cena</th>
                     <th>Zamiana</th>
                     <th>Miasto</th>
+                    <th>Kategoria</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var ogl in Model.Ogloszenie)
+                @foreach (var ogl in Model)
                 {
                     <tr onclick="location.href = '/Ogloszenia/Pokaz/@ogl.OgloszenieId'" style="cursor: pointer">
-                        <td><img src="~/@ogl.Zdjecia" height="90" /></td>
+                        <td><img src="~/@ogl.Zdjecia" height="90"/></td>
                         <td>@ogl.Tytul</td>
                         <td>@ogl.Cena</td>
                         <td>@ogl.Zamiana</td>
                         <td>@ogl.Uzytkownik.Adres</td>
+                        <td>@ogl.Podkategoria.Kategoria.Nazwa > @ogl.Podkategoria.Nazwa</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    }
 
 </div>

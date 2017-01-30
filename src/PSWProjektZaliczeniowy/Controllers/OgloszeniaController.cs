@@ -206,6 +206,11 @@ namespace PSWProjektZaliczeniowy.Controllers
             var podkat = _context.Podkategoria.Find(id);
             _context.Kategoria.Find(podkat.KategoriaId);
             _context.Ogloszenie.Where(o => o.PodkategoriaId == podkat.PodkategoriaId).ToList();
+            
+            foreach (var og in podkat.Ogloszenie)
+            {
+                _context.Uzytkownik.First(u => u.UzytkownikId == og.UzytkownikId);
+            }
 
             return View(podkat);
         }
@@ -253,6 +258,22 @@ namespace PSWProjektZaliczeniowy.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Uzytkownik");
+        }
+
+        [HttpGet]
+        public IActionResult Szukaj(string text)
+        {
+            var szukane = _context.Ogloszenie.Where(o => o.Tytul.Contains(text)).ToList();
+            DodajKategorie();
+
+            foreach (var ogl in szukane)
+            {
+                _context.Uzytkownik.First(u => u.UzytkownikId == ogl.UzytkownikId);
+            }
+
+            ViewData["sekwencja"] = text;
+
+            return View(szukane);
         }
     }
 }
