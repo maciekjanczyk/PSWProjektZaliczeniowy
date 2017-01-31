@@ -47,6 +47,10 @@
                     <b>Email:</b>
                     @Model.Uzytkownik.Email
                 </span>
+                <span><br />
+                    <b>Liczba obserwujących:</b>
+                    @Model.Obserwowane.Count
+                </span>
             </div>
         </div>
 
@@ -65,6 +69,13 @@
         <div class="panel panel-body">
             <button class="btn btn-info"
                     onclick="location.href = '/Wiadomosc/Wyslij/@Model.OgloszenieId'">Wyślij wiadomość</button>
+            @if (User.IsInRole("User") || User.IsInRole("Admin"))
+            {
+            <button class="btn btn-info"
+                    onclick="location.href = '/Ogloszenia/Obserwuj/@Model.OgloszenieId'">
+                Dodaj do obserwowanych
+            </button>
+            }
         </div>
 
     </div>

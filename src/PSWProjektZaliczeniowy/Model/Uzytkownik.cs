@@ -8,6 +8,12 @@ namespace PSWProjektZaliczeniowy.Model
 {
     public class Uzytkownik
     {
+        public Uzytkownik()
+        {
+            Ogloszenie = new List<Ogloszenie>();
+            Obserwowane = new List<Obserwowane>();
+        }
+
         public int UzytkownikId { get; set; }
         [Required]
         public string Login { get; set; }

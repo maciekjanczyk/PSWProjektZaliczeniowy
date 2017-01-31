@@ -7,6 +7,11 @@ namespace PSWProjektZaliczeniowy.Model
 {
     public class Ogloszenie
     {
+        public Ogloszenie()
+        {
+            Obserwowane = new List<Model.Obserwowane>();
+        }
+
         public int OgloszenieId { get; set; }
         public string Tytul { get; set; }
         public string Opis { get; set; }

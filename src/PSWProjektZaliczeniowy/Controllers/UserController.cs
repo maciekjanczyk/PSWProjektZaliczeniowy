@@ -204,5 +204,26 @@ namespace PSWProjektZaliczeniowy.Controllers
 
             return View(new MojeWiadomosciVM { Wyslane = retwysl, Odebrane = retodr });
         }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> Obserwowane()
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var user = _context.Uzytkownik.First(u => u.Login == userName);
+
+            _context.Obserwowane.Where(ob => ob.UzytkownikId == user.UzytkownikId).ToList();
+
+            foreach (var ob in user.Obserwowane)
+            {
+                _context.Ogloszenie.First(og => og.OgloszenieId == ob.OgloszenieId);
+                _context.Podkategoria.Find(ob.Ogloszenie.PodkategoriaId);
+                _context.Kategoria.Find(ob.Ogloszenie.Podkategoria.KategoriaId);
+                _context.Uzytkownik.Find(ob.Ogloszenie.UzytkownikId);
+            }
+
+            return View(user.Obserwowane);
+        }
     }
 }

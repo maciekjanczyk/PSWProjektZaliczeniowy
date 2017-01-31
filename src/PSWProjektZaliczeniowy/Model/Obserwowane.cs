@@ -9,8 +9,10 @@ namespace PSWProjektZaliczeniowy.Model
     {
         public int ObserwowaneId { get; set; }
 
+        public int UzytkownikId { get; set; }
         public Uzytkownik Uzytkownik { get; set; }
 
+        public int OgloszenieId { get; set; }
         public Ogloszenie Ogloszenie { get; set; }
     }
 }

@@ -152,6 +152,8 @@ namespace PSWProjektZaliczeniowy.Controllers
             _context.Uzytkownik.Find(ogl.UzytkownikId);
             _context.Podkategoria.Find(ogl.PodkategoriaId);
             _context.Kategoria.Find(ogl.Podkategoria.KategoriaId);
+            _context.Obserwowane.Where(ob => ob.OgloszenieId == id).ToList();
+
             return View(_context.Ogloszenie.Find(id));
         }
 
@@ -274,6 +276,46 @@ namespace PSWProjektZaliczeniowy.Controllers
             ViewData["sekwencja"] = text;
 
             return View(szukane);
+        }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> Obserwuj(int id)
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var user = _context.Uzytkownik.First(u => u.Login == userName);
+            var ogloszenie = _context.Ogloszenie.Find(id);
+
+            var obser = new Obserwowane { Ogloszenie = ogloszenie, Uzytkownik = user };
+
+            if (!_context.Obserwowane.Where(ob =>
+                ob.OgloszenieId == obser.OgloszenieId && ob.UzytkownikId == obser.UzytkownikId)
+                .ToList().Any())
+            {
+                _context.Obserwowane.Add(obser);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Obserwowane", "User");
+        }
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie")]
+        public async Task<IActionResult> UsunObs(int id)
+        {
+            var authInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("MyCookie");
+            var userName = authInfo.Principal.Identity.Name;
+            var user = _context.Uzytkownik.First(u => u.Login == userName);
+            var obser = _context.Obserwowane.Find(id);
+
+            if (obser.UzytkownikId == user.UzytkownikId)
+            {
+                _context.Obserwowane.Remove(obser);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Obserwowane", "User");
         }
     }
 }

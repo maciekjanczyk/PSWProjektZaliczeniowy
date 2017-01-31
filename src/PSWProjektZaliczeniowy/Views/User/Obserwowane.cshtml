@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PSWProjektZaliczeniowy.Model.Obserwowane>
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<br />
+<div class="panel panel-info">
+
+    <div class="panel-heading">
+        <h1>Obserwowane ogłoszenia</h1>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id.</th>
+                    <th>Tytuł</th>
+                    <th>Cena</th>
+                    <th>Zamiana</th>
+                    <th>Kategoria</th>
+                    <th>Miasto</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var ogl in Model)
+                {
+                    <tr onclick="location.href = '/Ogloszenia/Pokaz/@ogl.Ogloszenie.OgloszenieId'" style="cursor: pointer">
+                        <td>@ogl.Ogloszenie.OgloszenieId</td>
+                        <td>@ogl.Ogloszenie.Tytul</td>
+                        <td>@ogl.Ogloszenie.Cena</td>
+                        <td>@ogl.Ogloszenie.Zamiana</td>
+                        <td>@ogl.Ogloszenie.Podkategoria.Kategoria.Nazwa > @ogl.Ogloszenie.Podkategoria.Nazwa</td>
+                        <td>@ogl.Ogloszenie.Uzytkownik.Adres</td>
+                        <td><a href="/Ogloszenia/UsunObs/@ogl.ObserwowaneId">Usuń</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
