@@ -257,6 +257,8 @@ namespace PSWProjektZaliczeniowy.Controllers
             refka.Tytul = ogl.Tytul;
             refka.Opis = ogl.Opis;
             refka.Cena = ogl.Cena;
+            refka.Zamiana = refka.Cena == 0 ? true : false;
+
             _context.SaveChanges();
 
             return RedirectToAction("Uzytkownik");

@@ -113,5 +113,22 @@ namespace PSWProjektZaliczeniowy.Controllers
                 return View(nowa);
             }
         }
+
+
+
+        [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "MyCookie", Roles = "Admin")]
+        public IActionResult UsunOgloszenie(int id)
+        {
+            try
+            {
+                var ogl = _context.Ogloszenie.Find(id);
+                _context.Ogloszenie.Remove(ogl);
+                _context.SaveChanges();
+            }
+            catch (Exception) { }
+
+            return RedirectToAction("Index");
+        }
     }
 }

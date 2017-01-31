@@ -17,6 +17,20 @@
 </div>
 
 <div class="panel panel-group">
+    <div class="panel panel-heading">
+        <h2>Ogłoszenia</h2>
+    </div>
+
+    <div class="panel-body">
+        <div>
+          Usuń ogłoszenie po ID:  
+        </div><br/>
+        <input id="IdOgloszenia" type="text" class="form-control"/><br/>
+        <button class="btn btn-info" onclick="usun()">Usuń</button>
+    </div>
+</div>
+
+<div class="panel panel-group">
     <div class="panel-heading">
         <h2>Wiadomości</h2>
     </div>
@@ -27,3 +41,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    function usun() {
+        var inp = $('#IdOgloszenia').val();
+        location.href = '/Admin/UsunOgloszenie/' + inp;
+    }
+</script>
