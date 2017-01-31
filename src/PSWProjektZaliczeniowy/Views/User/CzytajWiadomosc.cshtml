@@ -6,7 +6,7 @@
 @{
 }
 
-<div class="panel panel-success">
+<!--<div class="panel panel-success">
     <div class="panel-heading">
         <h2>@Model.Wiadomosc.Tytul</h2>
     </div>
@@ -34,4 +34,27 @@
                     onclick="location.href = '/Wiadomosc/Odpowiedz?id=@Model.Wiadomosc.WiadomoscId&ty=@Model.Wiadomosc.Tytul'">Odpowiedz</button>
         </div>
     </div>
+</div>-->
+
+<div class="container">
+    <br/>
+    <div class="media">
+        <div class="media-left">
+            <img src="~/images/avatar.png" class="media-object" style="width:45px">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                @Model.Sender.Imie @Model.Sender.Nazwisko (@Model.Sender.Login)
+                <small>
+                    <i>wysłano do @Model.Receiver.Login w dniu @Model.Wiadomosc.Data</i>
+                </small>
+            </h4>
+            <p>Tytuł: @Model.Wiadomosc.Tytul</p><p>@Model.Wiadomosc.Tekst</p>
+            <br/><button class="btn btn-success media-left"
+                    onclick="location.href = '/Wiadomosc/Odpowiedz?id=@Model.Wiadomosc.WiadomoscId&ty=@Model.Wiadomosc.Tytul'">
+                Odpowiedz
+            </button>
+        </div>
+    </div>
 </div>
+<br/>

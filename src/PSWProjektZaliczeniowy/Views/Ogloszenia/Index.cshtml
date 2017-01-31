@@ -7,50 +7,43 @@
 }
 
 <br/>
-<div class="panel panel-success">
-    <div class="panel panel-heading">
-        <h3>Wybierz kategorię:</h3>
-    </div>
 
-    <div class="panel panel-body">
-        <ul class="list-group" style="cursor: pointer">
-            @foreach(var k in Model)
-            {
-                <li onclick="$('#div_@k.KategoriaId').fadeToggle()" class="list-group-item-success">
-                    @k.Nazwa
-                    <div id="div_@k.KategoriaId" style="display: none">
-                        <ul class="list-group">
-                            @foreach (var p in k.Podkategoria)
-                            {
-                                <li class="list-group-item-info">
-                                    <a href="/Ogloszenia/Kategoria/@p.PodkategoriaId">
-                                        @p.Nazwa
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </li>          
-            }
-        </ul>
+<div class="container">
+    <h2>Wybierz kategorię</h2>
+    <div class="list-group" style="cursor: pointer">
+        @foreach (var k in Model)
+        {
+            <a href="#" onclick="$('#div_@k.KategoriaId').fadeToggle()" class="list-group-item active">
+                @k.Nazwa <span class="badge">@k.Podkategoria.Count</span></a>
+                <div id="div_@k.KategoriaId" style="display: none">
+                        @foreach (var p in k.Podkategoria)
+                        {
+                                <a href="/Ogloszenia/Kategoria/@p.PodkategoriaId" class="list-group-item">
+                                    @p.Nazwa
+                                </a>
+                        }
+                </div>
+        }
     </div>
 </div>
 
-<div class="panel panel-info">
-    <div class="panel panel-heading">
-        <h3>Szukaj po nazwie:</h3>
-    </div>
+<div class="container">
+    <h2>Szukaj po nazwie:</h2>
 
-    <div class="panel panel-body">
-        <input type="text" id="sekwencja" class="form-control" />
-        <br/>
-        <button onclick="szukaj()" class="btn btn-success">Szukaj</button>
+    <div>
+        <div class="form-group">
+            <label for="text">Szukaj:</label>
+            <input type="text" id="sekwencja" class="form-control" />
+        </div>
+        <div class="form-group">
+            <button onclick="szukaj()" class="btn btn-default">Szukaj</button>
+        </div>
     </div>
-</div>
+</div>       
 
-<script>
-    function szukaj() {
-        var inp = $('#sekwencja').val();
-        location.href = '/Ogloszenia/Szukaj?text=' + inp;
-    }
-</script>
+    <script>
+        function szukaj() {
+            var inp = $('#sekwencja').val();
+            location.href = '/Ogloszenia/Szukaj?text=' + inp;
+        }
+    </script>

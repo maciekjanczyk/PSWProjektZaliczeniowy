@@ -6,49 +6,64 @@
 @{
 }
 
-<h3>@Model.Podkategoria.Kategoria.Nazwa > @Model.Podkategoria.Nazwa</h3>
-<div class="panel panel-success">
+<h4>@Model.Podkategoria.Kategoria.Nazwa > @Model.Podkategoria.Nazwa</h4>
+<div class="panel panel-group panel-info">
 
-    <h2>@Model.Tytul (ID: @Model.OgloszenieId)</h2>
-    @if (Model.Zamiana)
-    {
-        <h3>Zamiana</h3>
-    }
-    else
-    {
-        <h3>Cena: @Model.Cena</h3>
-    }
+    <div class="panel panel-heading">
+        <h2>@Model.Tytul</h2> (id ogłoszenia: @Model.OgloszenieId)
+    </div>
 
-    <div class="panel-body">
-        <div>
-            <img src="~/@Model.Zdjecia" />
+    <div class="panel">
+        <div class="panel-body">
+            @if (Model.Zamiana)
+            {
+                <h3>Zamiana</h3>
+            }
+            else
+            {
+                <h3>Cena: <b>@Model.Cena zł</b></h3>
+            }
+        </div>
+    </div>
+
+    <div>
+        <div class="panel panel-body">
+            <div class="panel">
+                <img class="img-responsive img-rounded img-thumbnail" src="~/@Model.Zdjecia" />
+            </div>
         </div>
 
-        <div>
-            <span>
-                <b>Miasto: </b>
-                @Model.Uzytkownik.Adres
-            </span>
-            <span>
-                <b>Nr kontaktowy:</b>
-                @Model.Uzytkownik.Nrtel
-            </span>
-            <span>
-                <b>Email:</b>
-                @Model.Uzytkownik.Email
-            </span>
+        <div class="panel">
+            <div class="panel-body">
+                <span>
+                    <b>Miasto: </b>
+                    @Model.Uzytkownik.Adres
+                </span><br/>
+                <span>
+                    <b>Nr kontaktowy:</b>
+                    @Model.Uzytkownik.Nrtel
+                </span><br/>
+                <span>
+                    <b>Email:</b>
+                    @Model.Uzytkownik.Email
+                </span>
+            </div>
         </div>
 
-        <div>
-            <b>Opis:</b>
+        <div class="panel panel-body">
+            <div class="panel">
+                <div>
+                    <b>Opis:</b>
+                </div>
+
+                <div>
+                    @Model.Opis
+                </div>
+            </div>
         </div>
 
-        <div>
-            @Model.Opis
-        </div>
-
-        <div>
-            <button class="btn btn-success"
+        <div class="panel panel-body">
+            <button class="btn btn-info"
                     onclick="location.href = '/Wiadomosc/Wyslij/@Model.OgloszenieId'">Wyślij wiadomość</button>
         </div>
 

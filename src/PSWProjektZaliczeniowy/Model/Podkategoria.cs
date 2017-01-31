@@ -8,6 +8,11 @@ namespace PSWProjektZaliczeniowy.Model
 {
     public class Podkategoria
     {
+        public Podkategoria()
+        {
+            Ogloszenie = new List<Ogloszenie>();
+        }
+
         public int PodkategoriaId { get; set; }
         public string Nazwa { get; set; }
         

@@ -17,7 +17,7 @@
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Leniwiec</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/images/logo.png" class="img-rounded" style="max-width:100px; margin-top: -7px;"/></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -36,13 +36,17 @@
 
                     @if(Context.User.IsInRole("User") || Context.User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="User" asp-action="Index">Moja strona</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="MojeWiadomosci">Wiadomości</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="Logout">Wyloguj</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Index">
+                            Moja strona <span class="glyphicon glyphicon-home"></span></a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="MojeWiadomosci">
+                            Wiadomości <span class="glyphicon glyphicon-envelope"></span></a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Logout">
+                            Wyloguj <span class="glyphicon glyphicon-log-out"></span></a></li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="User" asp-action="Login">Zaloguj</a></li>                    
+                        <li><a asp-area="" asp-controller="User" asp-action="Login">
+                                Zaloguj <span class="glyphicon glyphicon-log-in"></span></a></li>                    
                     }
                 </ul>
             </div>
