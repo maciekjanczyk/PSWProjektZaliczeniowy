@@ -6,8 +6,8 @@
 @{
 }
 
-<div class="panel panel-success">
-    <div class="panel-body">
+<div class="container">
+    <div class="form-group">
         <form method="post" enctype="multipart/form-data" asp-controller="Ogloszenia" asp-action="Dodaj">            
             @Html.ValidationSummary(true)
             <fieldset>
@@ -18,7 +18,7 @@
                     @Html.ValidationMessage("TytulError")
                 </div>
                 <div class="form-group">
-                    <h3>Cena (zostaw puste, jeśli chcesz zamiany):</h3>
+                    <h3>Cena (wstaw 0, jeśli chcesz wymiany przedmiotu):</h3>
                     @Html.TextBoxFor(p => p.Cena, "", new { Class = "form-control" })
                 </div>
                 <div class="form-group">
